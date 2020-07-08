@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Erstellungszeit: 08. Jul 2020 um 11:17
+-- Erstellungszeit: 08. Jul 2020 um 12:11
 -- Server-Version: 10.4.11-MariaDB
 -- PHP-Version: 7.4.4
 
@@ -89,6 +89,17 @@ CREATE TABLE `passengers` (
 -- --------------------------------------------------------
 
 --
+-- Tabellenstruktur für Tabelle `passenger_count`
+--
+
+CREATE TABLE `passenger_count` (
+  `fk_flight_info` int(11) DEFAULT NULL,
+  `fk_passenger_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellenstruktur für Tabelle `plane_info`
 --
 
@@ -137,6 +148,13 @@ ALTER TABLE `flight_info`
 --
 ALTER TABLE `passengers`
   ADD PRIMARY KEY (`passenger_id`);
+
+--
+-- Indizes für die Tabelle `passenger_count`
+--
+ALTER TABLE `passenger_count`
+  ADD KEY `fk_flight_info` (`fk_flight_info`),
+  ADD KEY `fk_passenger_id` (`fk_passenger_id`);
 
 --
 -- Indizes für die Tabelle `plane_info`
@@ -200,8 +218,14 @@ ALTER TABLE `flight_destination`
 --
 ALTER TABLE `flight_info`
   ADD CONSTRAINT `flight_info_ibfk_1` FOREIGN KEY (`fk_plane_id`) REFERENCES `plane_info` (`plane_id`),
-  ADD CONSTRAINT `flight_info_ibfk_2` FOREIGN KEY (`fk_passenger_id`) REFERENCES `passengers` (`passenger_id`),
   ADD CONSTRAINT `flight_info_ibfk_3` FOREIGN KEY (`fk_flight_destination_id`) REFERENCES `flight_destination` (`flight_destination_id`);
+
+--
+-- Constraints der Tabelle `passenger_count`
+--
+ALTER TABLE `passenger_count`
+  ADD CONSTRAINT `passenger_count_ibfk_1` FOREIGN KEY (`fk_flight_info`) REFERENCES `flight_info` (`flight_id`),
+  ADD CONSTRAINT `passenger_count_ibfk_2` FOREIGN KEY (`fk_passenger_id`) REFERENCES `passengers` (`passenger_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
